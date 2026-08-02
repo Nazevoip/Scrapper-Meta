@@ -1,0 +1,125 @@
+{
+  "payload": {
+    "results": [
+      [
+        {
+          "adArchiveID": "1001",
+          "pageID": "555",
+          "pageName": "Loja Alpha",
+          "isActive": true,
+          "collationCount": 24,
+          "startDate": 1777766400,
+          "endDate": 0,
+          "publisherPlatform": ["FACEBOOK", "INSTAGRAM"],
+          "impressionsWithIndex": {"impressionsText": null, "impressionsIndex": -1},
+          "snapshot": {
+            "title": "Caneca Termica 500ml",
+            "body": {"text": "Mantem gelado por 24h"},
+            "caption": "lojaalpha.com.br",
+            "cta_text": "Comprar agora",
+            "link_url": "https://www.lojaalpha.com.br/produtos/caneca-termica/?utm_source=facebook&utm_campaign=abc&fbclid=xyz",
+            "display_format": "VIDEO",
+            "page_name": "Loja Alpha"
+          }
+        },
+        {
+          "adArchiveID": "1002",
+          "pageID": "555",
+          "pageName": "Loja Alpha",
+          "isActive": true,
+          "collationCount": 11,
+          "startDate": 1782950400,
+          "publisherPlatform": ["FACEBOOK"],
+          "snapshot": {
+            "title": "Caneca Termica 500ml",
+            "body": {"text": "Ultimas unidades"},
+            "caption": "lojaalpha.com.br",
+            "cta_text": "Comprar agora",
+            "link_url": "https://lojaalpha.com.br/produtos/caneca-termica?utm_source=ig",
+            "display_format": "IMAGE",
+            "page_name": "Loja Alpha"
+          }
+        },
+        {
+          "adArchiveID": "1002",
+          "pageID": "555",
+          "pageName": "Loja Alpha",
+          "isActive": true,
+          "collationCount": 11,
+          "startDate": 1782950400,
+          "snapshot": {"title": "Caneca Termica 500ml", "link_url": "https://lojaalpha.com.br/produtos/caneca-termica"}
+        }
+      ],
+      [
+        {
+          "adArchiveID": "1003",
+          "pageID": "777",
+          "pageName": "Revendedor Beta",
+          "isActive": false,
+          "collationCount": 2,
+          "startDate": 1781568000,
+          "endDate": 1784937600,
+          "publisherPlatform": ["INSTAGRAM"],
+          "snapshot": {
+            "title": "Caneca Termica 500ml",
+            "body": {"text": "Promo relampago"},
+            "cta_text": "Saiba mais",
+            "link_url": "https://l.facebook.com/l.php?u=https%3A%2F%2Fwww.lojaalpha.com.br%2Fprodutos%2Fcaneca-termica%2F%3Futm_source%3Dstories&h=AT1",
+            "display_format": "IMAGE",
+            "page_name": "Revendedor Beta"
+          }
+        },
+        {
+          "adArchiveID": "2001",
+          "pageID": "888",
+          "pageName": "Gamma Store",
+          "isActive": true,
+          "collationCount": 1,
+          "startDate": 1785369600,
+          "euTotalReach": 45000,
+          "publisherPlatform": ["FACEBOOK"],
+          "snapshot": {
+            "title": "",
+            "body": {"text": ""},
+            "link_url": "",
+            "display_format": "DCO",
+            "page_name": "Gamma Store",
+            "cards": [
+              {
+                "title": "Luminaria Astronauta",
+                "body": {"text": "Decore o quarto"},
+                "cta_text": "Comprar agora",
+                "link_url": "https://gammastore.com/p/luminaria-astronauta?variant=12"
+              }
+            ]
+          }
+        },
+        {
+          "adArchiveID": "",
+          "pageName": "Anuncio quebrado",
+          "snapshot": {"title": "sem id"}
+        },
+        {
+          "adArchiveID": "3001",
+          "pageID": "999",
+          "pageName": "Delta Fit",
+          "isActive": true,
+          "collationCount": 3,
+          "startDate": 1775001600,
+          "publisherPlatform": ["FACEBOOK", "MESSENGER"],
+          "snapshot": {
+            "title": "Corda de Pular Inteligente",
+            "body": {"text": "Conta os pulos sozinha"},
+            "cta_text": "Comprar agora",
+            "link_url": "",
+            "display_format": "VIDEO",
+            "page_name": "Delta Fit"
+          }
+        }
+      ]
+    ],
+    "forwardCursor": "AQHR_cursor_pagina_2",
+    "backwardCursor": null,
+    "isResultComplete": false
+  }
+}
