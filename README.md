@@ -44,10 +44,49 @@ coletado** — o score é relativo à busca, não absoluto entre buscas diferent
 Fora da UE ninguém tem `reach`; nesse caso o peso é redistribuído
 proporcionalmente entre os outros quatro sinais.
 
+## Quem está escalando agora (coleta ao vivo)
+
+O endpoint `/ads/library/async/search_ads/` usado por `fetcher.py` **foi removido
+pela Meta** — hoje responde 404 mesmo com o desafio anti-bot resolvido. A coleta
+que funciona está em `metaads/live.py`: abre a biblioteca num Chrome real,
+captura o POST `AdLibrarySearchPaginationQuery` que a própria página emite e
+repagina de dentro dela. Assim `doc_id`, `lsd`, `fb_dtsg` e o cookie do desafio
+vêm da sessão, e uma rotação desses tokens não quebra a coleta.
+
+```bash
+python -m metaads.cli_escalando "colageno" --country BR --pages 6
+```
+
+```
+60 anuncios coletados · 46 anunciantes · 4 escalando agora
+
+>> 1. Kokeshi  [ESCALANDO]
+     6 ativos · 15 copias · 1 criativos · 64 dias no ar
+     porque: 15 copias do criativo no ar; 6 anuncios ativos ao mesmo tempo; ha 64 dias no ar
+     destino: https://kokeshi.com.br/collections/mais-vendidos
+```
+
+Um card por **anunciante** (`page_id`), não por anúncio: um anunciante com 28
+criativos no ar aparece uma vez. O corte de "escalando" usa só o que a
+biblioteca publica — `ativos`, `copias` (`collation_count`, contado pela própria
+Meta), `criativos` distintos e `dias` do anúncio ativo mais antigo:
+
+- **ESCALANDO** — tem volume rodando agora **e** já passou de `DIAS_VALIDACAO`
+- **subindo** — volume, mas novo demais para ter sido validado
+- **no ar** — antigo, mas sem volume (anúncio esquecido ligado)
+- **testando** / **parado** — sem sinal de escala / sem anúncio ativo
+
+Limiares no topo de `metaads/advertisers.py` (`MIN_VARIACOES`, `MIN_ATIVOS`,
+`DIAS_VALIDACAO`). `--todos` mostra quem não passou e por quê.
+
+Custa mais que uma API: sobe um Chrome e rola a página, então leva dezenas de
+segundos por busca. Vale cachear se for chamar com frequência.
+
 ## Instalação
 
 ```bash
 pip install -r requirements.txt
+playwright install chromium   # ou use o Chrome já instalado (channel="chrome")
 ```
 
 ## Uso
@@ -114,12 +153,15 @@ deduplicação, normalização de URL e o score.
 
 ## Limitações conhecidas
 
-- **Coleta não verificada ao vivo neste repositório.** O parser e o score foram
-  testados contra fixture; o `fetcher` depende do formato atual do endpoint
-  interno da Meta, que muda sem aviso. Se `AdLibraryError` aparecer na primeira
-  página, o formato mudou ou o IP foi barrado.
-- Sem login, a biblioteca limita a paginação e pode exigir checkpoint. Aumente
-  `--delay` e evite muitas buscas seguidas do mesmo IP.
+- **`fetcher.py` está morto.** A Meta removeu `/ads/library/async/search_ads/`;
+  todas as variantes do caminho retornam 404. O bloqueio anterior (HTTP 403) era
+  um desafio anti-bot do proxy de borda, resolvível com um POST em
+  `/__rd_verify_...` — mas depois dele o que aparece é o 404. Use `live.py`.
+- `live.py` precisa de um Chrome real. Não roda em container sem browser.
+- Sem login, a biblioteca limita a paginação e pode exigir checkpoint. Evite
+  muitas buscas seguidas do mesmo IP.
+- Coleta automatizada não é o uso previsto no ToS da Meta, ainda que o dado seja
+  público de transparência. A Ad Library API oficial existe para isso.
 - `collationCount` conta duplicatas do criativo, não impressões. Um anunciante
   pode duplicar sem escalar orçamento.
 - O agrupamento por URL falha quando o anunciante usa link único por anúncio;
