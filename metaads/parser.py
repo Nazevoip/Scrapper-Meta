@@ -154,11 +154,13 @@ def parse_ad(raw: dict) -> Ad | None:
         cta_text=_text(snapshot.get("cta_text")) or _text(first_card.get("cta_text")),
         link_url=str(link_url or "").strip(),
         display_format=str(snapshot.get("display_format") or "").lower(),
-        platforms=[str(p) for p in (raw.get("publisherPlatform") or [])],
+        platforms=[str(p) for p in (raw.get("publisherPlatform")
+                                    or raw.get("publisher_platform") or [])],
         start_date=_timestamp(raw.get("startDate") or raw.get("start_date")),
         end_date=_timestamp(raw.get("endDate") or raw.get("end_date")),
         is_active=bool(raw.get("isActive", raw.get("is_active", False))),
-        collation_count=max(int(raw.get("collationCount") or 1), 1),
+        collation_count=max(int(raw.get("collationCount")
+                                or raw.get("collation_count") or 1), 1),
         eu_total_reach=_eu_reach(raw),
         impressions_text=(raw.get("impressionsWithIndex") or {}).get("impressionsText"),
     )
