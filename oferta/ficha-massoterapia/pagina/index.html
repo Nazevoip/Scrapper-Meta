@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ficha de Anamnese para Massoterapia</title>
+<meta name="description" content="Ficha de anamnese para massoterapeutas: PDF editável e pronto para imprimir, com histórico de saúde, mapa de dor e termo de consentimento LGPD.">
+
+<!-- ============================================================
+     ANTES DE PUBLICAR, troque 3 coisas:
+     1. CHECKOUT (no script do fim da página): o link do Kiwify/Hotmart.
+     2. O rodapé: seu nome ou razão social, CNPJ/CPF e e-mail de contato.
+     3. Cole aqui embaixo o código do Pixel da Meta.
+     ============================================================ -->
+
+<style>
+  :root {
+    --verde: #2F6F62;
+    --verde-escuro: #24574D;
+    --verde-claro: #EAF2EF;
+    --tinta: #22302C;
+    --cinza: #5C6B66;
+    --borda: #D5E2DD;
+    --fundo: #FAFCFB;
+    --cta: #E07A2F;
+    --cta-escuro: #C4661F;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--fundo); color: var(--tinta);
+    font: 17px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  .wrap { max-width: 620px; margin: 0 auto; padding: 0 18px; }
+  section { padding: 36px 0; }
+  section + section { border-top: 1px solid var(--borda); }
+  h1 { font-size: 30px; line-height: 1.2; margin: 0 0 14px; letter-spacing: -0.01em; }
+  h2 { font-size: 23px; line-height: 1.25; margin: 0 0 16px; }
+  p { margin: 0 0 14px; }
+  .topo { background: var(--verde); color: #fff; padding: 40px 0 34px; }
+  .topo h1 { color: #fff; }
+  .topo p { color: #DDEBE6; font-size: 18px; }
+  .etiqueta {
+    display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; background: rgba(255,255,255,0.14); color: #fff;
+    padding: 5px 10px; border-radius: 99px; margin-bottom: 16px;
+  }
+  .previa { display: flex; gap: 12px; margin: 26px 0 6px; }
+  .previa img {
+    width: 50%; height: auto; border-radius: 6px; background: #fff;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.25);
+  }
+  .previa img:last-child { transform: translateY(18px); }
+  .cta {
+    display: block; width: 100%; text-align: center; text-decoration: none;
+    background: var(--cta); color: #fff; font-weight: 800; font-size: 19px;
+    padding: 18px 16px; border-radius: 10px; margin: 26px 0 10px;
+    box-shadow: 0 4px 0 var(--cta-escuro);
+  }
+  .cta:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--cta-escuro); }
+  .cta small { display: block; font-weight: 500; font-size: 14px; opacity: 0.92; }
+  .seguro { text-align: center; font-size: 14px; color: var(--cinza); margin: 0; }
+  .topo .seguro { color: #CFE2DB; }
+  ul.lista { list-style: none; padding: 0; margin: 0; }
+  ul.lista li { padding: 10px 0 10px 34px; position: relative; border-bottom: 1px solid var(--borda); }
+  ul.lista li:last-child { border-bottom: 0; }
+  ul.lista li::before {
+    content: ""; position: absolute; left: 4px; top: 15px; width: 18px; height: 18px;
+    border-radius: 50%; background: var(--verde-claro);
+    box-shadow: inset 0 0 0 2px var(--verde);
+  }
+  ul.lista li::after {
+    content: ""; position: absolute; left: 10px; top: 19px; width: 5px; height: 9px;
+    border: solid var(--verde); border-width: 0 2px 2px 0; transform: rotate(45deg);
+  }
+  ul.dor li::before { background: #FBEDE3; box-shadow: inset 0 0 0 2px var(--cta); }
+  ul.dor li::after {
+    left: 9px; top: 23px; width: 8px; height: 0; border-width: 2px 0 0 0;
+    border-color: var(--cta); transform: none;
+  }
+  .secoes { counter-reset: s; display: grid; gap: 10px; padding: 0; margin: 0; list-style: none; }
+  .secoes li {
+    counter-increment: s; background: #fff; border: 1px solid var(--borda); border-radius: 10px;
+    padding: 12px 14px 12px 52px; position: relative;
+  }
+  .secoes li::before {
+    content: counter(s); position: absolute; left: 14px; top: 12px; width: 26px; height: 26px;
+    border-radius: 50%; background: var(--verde); color: #fff; font-weight: 700;
+    font-size: 14px; display: grid; place-items: center;
+  }
+  .secoes strong { display: block; }
+  .secoes span { color: var(--cinza); font-size: 15px; }
+  .preco {
+    background: #fff; border: 2px solid var(--verde); border-radius: 14px;
+    padding: 24px 20px; text-align: center;
+  }
+  .preco .valor { font-size: 44px; font-weight: 800; color: var(--verde); line-height: 1; margin: 6px 0 4px; }
+  .preco .valor sup { font-size: 20px; vertical-align: 18px; }
+  .garantia { display: flex; gap: 14px; align-items: flex-start; }
+  .selo {
+    flex: none; width: 64px; height: 64px; border-radius: 50%; background: var(--verde-claro);
+    border: 2px solid var(--verde); color: var(--verde); font-weight: 800; text-align: center;
+    display: grid; place-items: center; font-size: 15px; line-height: 1.05;
+  }
+  details { border-bottom: 1px solid var(--borda); padding: 14px 0; }
+  details:last-child { border-bottom: 0; }
+  summary { font-weight: 700; cursor: pointer; list-style: none; padding-right: 26px; position: relative; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; position: absolute; right: 2px; top: -2px; font-size: 22px; color: var(--verde); }
+  details[open] summary::after { content: "–"; }
+  details p { margin: 10px 0 0; color: var(--cinza); }
+  footer { background: var(--tinta); color: #B9C6C1; font-size: 13px; padding: 26px 0 90px; }
+  footer p { margin: 0 0 6px; }
+  .fixo {
+    position: fixed; left: 0; right: 0; bottom: 0; padding: 10px 18px;
+    background: rgba(250,252,251,0.96); border-top: 1px solid var(--borda);
+    transform: translateY(110%); transition: transform 0.25s;
+  }
+  .fixo.ver { transform: none; }
+  .fixo .cta { max-width: 584px; margin: 0 auto; padding: 14px; font-size: 17px; }
+  @media (min-width: 700px) {
+    h1 { font-size: 38px; }
+    .fixo { display: none; }
+    footer { padding-bottom: 26px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topo">
+  <div class="wrap">
+    <span class="etiqueta">Para massoterapeutas</span>
+    <h1>A ficha de anamnese que faltava no seu atendimento</h1>
+    <p>Histórico de saúde, contraindicações, mapa de dor e termo de consentimento num PDF só. É só colocar o nome do seu espaço e usar hoje: no celular, no computador ou impresso.</p>
+    <div class="previa">
+      <img src="previa-ficha.jpg" width="910" height="1287" alt="Página 1 da ficha: dados do cliente, motivo da procura, histórico de saúde e avaliação do profissional">
+      <img src="previa-ficha-2.jpg" width="910" height="1287" alt="Página 2 da ficha: hábitos, regiões com dor, preferências e termo de consentimento">
+    </div>
+    <a class="cta" href="#">Quero minha ficha<small>R$ 19,90 · acesso imediato</small></a>
+    <p class="seguro">Pagamento seguro · Pix ou cartão · Garantia de 7 dias</p>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2>Você já passou por isso?</h2>
+    <ul class="lista dor">
+      <li>Descobriu <strong>no meio da sessão</strong> que a cliente estava grávida, tinha trombose ou tinha feito cirurgia há pouco tempo.</li>
+      <li>Anota a avaliação num caderno ou no bloco de notas do celular e, na volta do cliente, não acha mais nada.</li>
+      <li>Perdeu uma tarde montando uma ficha no Word e ela continua com cara de improviso.</li>
+      <li>Não sabe se pode guardar dados de saúde do cliente sem uma autorização por escrito.</li>
+    </ul>
+    <p style="margin-top:18px">Uma boa anamnese evita tudo isso em 5 minutos, antes da primeira sessão. E passa ao cliente a segurança de estar com alguém que leva o trabalho a sério.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>O que tem na ficha</h2>
+    <ol class="secoes">
+      <li><strong>Dados do cliente</strong><span>Contato, profissão e contato de emergência.</span></li>
+      <li><strong>Motivo da procura</strong><span>Queixa principal, objetivo da sessão e escala de dor de 0 a 10.</span></li>
+      <li><strong>Histórico de saúde</strong><span>15 condições para marcar, incluindo as principais contraindicações, além de medicamentos, alergias e cirurgias.</span></li>
+      <li><strong>Avaliação do profissional</strong><span>Liberação médica, técnica indicada e observações.</span></li>
+      <li><strong>Hábitos</strong><span>Atividade física, sono, água, rotina de trabalho e nível de estresse.</span></li>
+      <li><strong>Regiões com dor ou tensão</strong><span>13 regiões do corpo para marcar.</span></li>
+      <li><strong>Preferências</strong><span>Pressão preferida e áreas em que o cliente prefere não receber toque.</span></li>
+      <li><strong>Declaração e consentimento</strong><span>Termo de veracidade e autorização de uso dos dados conforme a LGPD, com assinatura.</span></li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Por que usar essa ficha</h2>
+    <ul class="lista">
+      <li><strong>Mais segurança:</strong> as contraindicações aparecem antes da maca, não depois.</li>
+      <li><strong>Cara de profissional:</strong> layout limpo, com o nome do seu espaço no topo.</li>
+      <li><strong>Preenche no celular ou no computador:</strong> é um PDF editável, então você não precisa de nenhum programa.</li>
+      <li><strong>Também funciona impressa:</strong> é A4 e você imprime quantas vezes quiser.</li>
+      <li><strong>Autorização por escrito:</strong> já vem com o termo de consentimento para dados de saúde.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="preco">
+      <p style="margin:0;color:var(--cinza)">Ficha de Anamnese para Massoterapia</p>
+      <div class="valor"><sup>R$</sup>19,90</div>
+      <p style="margin:0;color:var(--cinza);font-size:15px">pagamento único · PDF editável · acesso imediato</p>
+      <a class="cta" href="#">Quero minha ficha agora</a>
+      <p class="seguro">Você recebe o link de download no e-mail logo após o pagamento.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap garantia">
+    <div class="selo"><span>7<br>DIAS</span></div>
+    <div>
+      <h2 style="font-size:20px;margin-bottom:8px">Garantia de 7 dias</h2>
+      <p style="margin:0">Se a ficha não servir para o seu atendimento, peça o reembolso em até 7 dias pelo e-mail da compra e devolvemos 100% do valor, sem perguntas.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Dúvidas frequentes</h2>
+    <details>
+      <summary>Como eu recebo a ficha?</summary>
+      <p>Logo depois que o pagamento é aprovado, chega no seu e-mail o link para baixar o PDF. No Pix, isso leva poucos minutos.</p>
+    </details>
+    <details>
+      <summary>Preciso de algum programa para preencher?</summary>
+      <p>Não. O PDF abre no navegador do computador, no leitor de PDF do celular ou no Adobe Reader, que é gratuito. Se preferir, é só imprimir e preencher à mão.</p>
+    </details>
+    <details>
+      <summary>Posso colocar o nome do meu espaço?</summary>
+      <p>Pode. No topo da ficha tem um campo para o nome do profissional ou do espaço.</p>
+    </details>
+    <details>
+      <summary>Posso usar com quantos clientes?</summary>
+      <p>Com quantos quiser. Você salva uma cópia por cliente ou imprime quantas folhas precisar.</p>
+    </details>
+    <details>
+      <summary>Serve para qual tipo de massagem?</summary>
+      <p>Para atendimentos de massoterapia em geral, como relaxante, terapêutica, desportiva e drenagem. As perguntas são as de uma anamnese básica, comuns a todas as técnicas.</p>
+    </details>
+    <details>
+      <summary>A ficha substitui uma avaliação médica?</summary>
+      <p>Não. Ela organiza as informações do cliente e ajuda você a identificar quando pedir liberação médica antes da sessão.</p>
+    </details>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <a class="cta" href="#">Quero minha ficha por R$ 19,90</a>
+    <p class="seguro">Pagamento seguro · Pix ou cartão · Garantia de 7 dias</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <!-- TROQUE pelos seus dados: o Código de Defesa do Consumidor exige a identificação do vendedor. -->
+    <p><strong>SEU NOME OU RAZÃO SOCIAL</strong> · CNPJ/CPF 00.000.000/0000-00</p>
+    <p>Contato: seuemail@exemplo.com</p>
+    <p>Este produto não substitui avaliação médica. Este site não faz parte do Facebook nem é endossado pela Meta Platforms.</p>
+  </div>
+</footer>
+
+<div class="fixo" id="fixo"><a class="cta" href="#">Quero minha ficha · R$ 19,90</a></div>
+
+<script>
+  // TROQUE pelo link do seu checkout (Kiwify, Hotmart...). Vale para todos os botões.
+  var CHECKOUT = "https://COLE-AQUI-O-LINK-DO-CHECKOUT";
+
+  document.querySelectorAll("a.cta").forEach(function (a) { a.href = CHECKOUT; });
+
+  // Botão fixo no celular depois que o primeiro botão sai da tela.
+  var primeiro = document.querySelector(".topo .cta");
+  var fixo = document.getElementById("fixo");
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (e) {
+      fixo.classList.toggle("ver", !e[0].isIntersecting && e[0].boundingClientRect.top < 0);
+    }).observe(primeiro);
+  }
+</script>
+</body>
+</html>
