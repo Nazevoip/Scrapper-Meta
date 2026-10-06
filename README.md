@@ -82,6 +82,25 @@ Limiares no topo de `metaads/advertisers.py` (`MIN_VARIACOES`, `MIN_ATIVOS`,
 Custa mais que uma API: sobe um Chrome e rola a página, então leva dezenas de
 segundos por busca. Vale cachear se for chamar com frequência.
 
+## Roteiros para avatar de IA
+
+`metaads/cli_roteiros.py` coleta o nicho como o `cli_escalando`, pega a copy dos
+anúncios ativos mais copiados de até 5 anunciantes (quem está escalando vem
+primeiro) e pede ao Claude roteiros **novos** para o seu produto, de ~30 segundos
+cada, com gancho, desenvolvimento, CTA e a legenda do anúncio.
+
+```bash
+export ANTHROPIC_API_KEY=...
+python -m metaads.cli_roteiros "massoterapia" \
+    --produto "Ficha de anamnese para massoterapeutas, PDF editável, R$ 19,90" \
+    --quantidade 10 --saida roteiros.md
+```
+
+A fala de cada roteiro sai numa linha só, pronta para colar em qualquer
+ferramenta de avatar. O prompt proíbe copiar frases dos concorrentes, inventar
+números ou depoimentos e fazer o avatar se passar por profissional — revise
+mesmo assim antes de subir.
+
 ## Instalação
 
 ```bash

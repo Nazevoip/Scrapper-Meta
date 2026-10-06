@@ -1,3 +1,4 @@
 scrapling[fetchers]>=0.4
 playwright>=1.49
 pytest>=8
+anthropic>=1.11
