@@ -1,9 +1,9 @@
-"""Gera a Ficha de Anamnese de Massoterapia (PDF editavel, A4, 2 paginas).
+"""Gera as fichas do Kit Massoterapia Organizada (PDFs editaveis, A4).
 
-    python oferta/ficha-massoterapia/gerar_ficha.py
+    python oferta/kit-massoterapia/gerar_fichas.py
 
-Os campos sao preenchiveis no computador e no celular (Adobe, navegador) e a
-ficha tambem funciona impressa.
+Os campos sao preenchiveis no computador e no celular (Adobe, navegador) e as
+fichas tambem funcionam impressas. As cores seguem a pagina de vendas.
 """
 
 from __future__ import annotations
@@ -14,13 +14,16 @@ from reportlab.lib.colors import HexColor, white
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 
-SAIDA = Path(__file__).with_name("ficha-anamnese-massoterapia.pdf")
+PASTA = Path(__file__).with_name("fichas")
 
-VERDE = HexColor("#2F6F62")
-VERDE_CLARO = HexColor("#EAF2EF")
-TINTA = HexColor("#22302C")
-CINZA = HexColor("#6B7A75")
-BORDA = HexColor("#B9CBC4")
+COR = HexColor("#74344F")
+COR_CLARA = HexColor("#F5E8ED")
+COR_CAMPO = HexColor("#8A4A66")
+TINTA = HexColor("#2B2428")
+CINZA = HexColor("#6D6268")
+BORDA = HexColor("#E0CDD5")
+
+AVISO_SAUDE = "Esta ficha registra informações para o atendimento e não substitui avaliação médica."
 
 W, H = A4
 M = 36                      # margem lateral
@@ -28,11 +31,14 @@ LARGURA = W - 2 * M
 
 
 class Ficha:
-    def __init__(self, path: Path):
+    def __init__(self, path: Path, titulo: str, total_paginas: int = 1, rodape: str = ""):
         self.c = canvas.Canvas(str(path), pagesize=A4)
-        self.c.setTitle("Ficha de Anamnese - Massoterapia")
-        self.c.setAuthor("Ficha de Anamnese - Massoterapia")
+        self.c.setTitle(f"{titulo} - Kit Massoterapia Organizada")
+        self.c.setAuthor("Kit Massoterapia Organizada")
         self.form = self.c.acroForm
+        self.titulo = titulo
+        self.total = total_paginas
+        self.rodape = rodape
         self.y = H
         self.pagina = 0
 
@@ -49,31 +55,31 @@ class Ficha:
         c = self.c
         c.setFont("Helvetica", 7)
         c.setFillColor(CINZA)
-        c.drawString(M, 22, "Esta ficha registra informações para o atendimento e não substitui "
-                            "avaliação médica.")
-        c.drawRightString(W - M, 22, f"Página {self.pagina} de 2")
+        c.drawString(M, 22, self.rodape or "Kit Massoterapia Organizada")
+        if self.total > 1:
+            c.drawRightString(W - M, 22, f"Página {self.pagina} de {self.total}")
 
     def cabecalho(self):
         c = self.c
-        c.setFillColor(VERDE)
+        c.setFillColor(COR)
         c.rect(0, H - 78, W, 78, stroke=0, fill=1)
         c.setFillColor(white)
         c.setFont("Helvetica-Bold", 20)
-        c.drawString(M, H - 42, "Ficha de Anamnese")
+        c.drawString(M, H - 42, self.titulo)
         c.setFont("Helvetica", 11)
         c.drawString(M, H - 60, "Massoterapia")
         c.setFont("Helvetica", 7.5)
         c.drawRightString(W - M, H - 30, "PROFISSIONAL / ESPAÇO")
         self._campo("profissional", W - M - 200, H - 56, 200, 18, borda=white,
-                    fundo=HexColor("#3E8273"), cor_texto=white)
+                    fundo=COR_CAMPO, cor_texto=white)
         self.y = H - 96
 
     def secao(self, numero: int, titulo: str):
         c = self.c
         self.y -= 8
-        c.setFillColor(VERDE_CLARO)
+        c.setFillColor(COR_CLARA)
         c.roundRect(M, self.y - 16, LARGURA, 20, 4, stroke=0, fill=1)
-        c.setFillColor(VERDE)
+        c.setFillColor(COR)
         c.setFont("Helvetica-Bold", 10)
         c.drawString(M + 8, self.y - 10, f"{numero}. {titulo.upper()}")
         self.y -= 26
@@ -131,7 +137,7 @@ class Ficha:
             y = self.y - lin * 18 - 12
             self.form.checkbox(
                 name=f"{prefixo}_{_slug(item)}", x=x, y=y, size=10, borderWidth=0.8,
-                borderColor=VERDE, fillColor=white, textColor=VERDE, buttonStyle="check",
+                borderColor=COR, fillColor=white, textColor=COR, buttonStyle="check",
             )
             c.setFont("Helvetica", 8.5)
             c.setFillColor(TINTA)
@@ -159,7 +165,7 @@ class Ficha:
             x = x0 + n * passo
             self.form.radio(
                 name=nome, value=str(n), x=x, y=y, size=11, borderWidth=0.8,
-                borderColor=VERDE, fillColor=white, textColor=VERDE,
+                borderColor=COR, fillColor=white, textColor=COR,
                 buttonStyle="circle", selected=False,
             )
             c.setFillColor(TINTA)
@@ -174,6 +180,44 @@ class Ficha:
             c.drawString(M, self.y - tamanho, linha)
             self.y -= tamanho + 3.5
         self.y -= 4
+
+    def tabela(self, colunas: list[tuple[str, float]], linhas: int, prefixo: str,
+               altura: float = 17, fixos: list[str] | None = None):
+        """Tabela de campos. Coluna "#" numera as linhas; `fixos` preenche a 1a coluna."""
+        c = self.c
+        larguras = [LARGURA * f for _, f in colunas]
+        c.setFillColor(COR)
+        c.rect(M, self.y - 16, LARGURA, 16, stroke=0, fill=1)
+        c.setFillColor(white)
+        c.setFont("Helvetica-Bold", 7)
+        x = M
+        for (rotulo, _), w in zip(colunas, larguras):
+            c.drawString(x + 4, self.y - 11, rotulo.upper())
+            x += w
+        self.y -= 16
+        for i in range(linhas):
+            x = M
+            for j, ((rotulo, _), w) in enumerate(zip(colunas, larguras)):
+                if rotulo == "#":
+                    c.setStrokeColor(BORDA)
+                    c.setLineWidth(0.8)
+                    c.rect(x, self.y - altura, w, altura, stroke=1, fill=0)
+                    c.setFillColor(CINZA)
+                    c.setFont("Helvetica", 8)
+                    c.drawCentredString(x + w / 2, self.y - altura + 5, str(i + 1))
+                elif j == 0 and fixos:
+                    c.setStrokeColor(BORDA)
+                    c.setLineWidth(0.8)
+                    c.rect(x, self.y - altura, w, altura, stroke=1, fill=0)
+                    c.setFillColor(TINTA)
+                    c.setFont("Helvetica", 8.5)
+                    c.drawString(x + 5, self.y - altura + 5, fixos[i])
+                else:
+                    self._campo(f"{prefixo}_{i + 1}_{_slug(rotulo)}", x, self.y - altura, w,
+                                altura)
+                x += w
+            self.y -= altura
+        self.y -= 12
 
     def assinatura(self):
         c = self.c
@@ -210,8 +254,10 @@ def _quebrar(c, texto, largura, tamanho):
     return linhas + [atual]
 
 
-def main():
-    f = Ficha(SAIDA)
+
+
+def ficha_anamnese(path: Path):
+    f = Ficha(path, "Ficha de Anamnese", total_paginas=2, rodape=AVISO_SAUDE)
 
     # -- pagina 1 ---------------------------------------------------------- #
     f.nova_pagina()
@@ -280,9 +326,96 @@ def main():
     f.marcadores(["Autorizo contato por WhatsApp para lembretes de sessão"], "autoriza",
                  colunas=1)
     f.assinatura()
-
     f.salvar()
-    print(f"salvo em {SAIDA}")
+
+
+def ficha_evolucao(path: Path):
+    f = Ficha(path, "Evolução e Acompanhamento", rodape=AVISO_SAUDE)
+    f.nova_pagina()
+    f.cabecalho()
+
+    f.secao(1, "Identificação")
+    f.linha([("Nome do cliente", "nome", 0.6), ("Início do acompanhamento", "inicio", 0.4)])
+    f.linha([("Objetivo do tratamento", "objetivo", 0.6), ("Frequência combinada", "frequencia", 0.4)])
+
+    f.secao(2, "Registro por sessão")
+    f.tabela([("#", 0.05), ("Data", 0.11), ("Técnica", 0.19), ("Regiões trabalhadas", 0.25),
+              ("Dor antes", 0.1), ("Dor depois", 0.1), ("Observações", 0.2)],
+             linhas=16, prefixo="sessao", altura=19)
+    f.aviso("Dor antes e depois: de 0 (sem dor) a 10 (pior dor), segundo o cliente.")
+
+    f.secao(3, "Resumo da evolução")
+    f.caixa("O que melhorou desde o início", "melhorou", 34)
+    f.caixa("Próximos passos e ajustes no tratamento", "proximos", 34)
+    f.salvar()
+
+
+def ficha_pacotes(path: Path):
+    f = Ficha(path, "Controle de Sessões e Pacotes")
+    f.nova_pagina()
+    f.cabecalho()
+
+    f.secao(1, "Cliente e pacote")
+    f.linha([("Nome do cliente", "nome", 0.6), ("Telefone / WhatsApp", "telefone", 0.4)])
+    f.linha([("Pacote contratado", "pacote", 0.4), ("Nº de sessões", "n_sessoes", 0.2),
+             ("Valor total", "valor", 0.2), ("Validade", "validade", 0.2)])
+
+    f.secao(2, "Sessões")
+    f.tabela([("#", 0.07), ("Data agendada", 0.18), ("Realizada em", 0.18),
+              ("Falta / reagendamento", 0.25), ("Observações", 0.32)],
+             linhas=10, prefixo="sessao", altura=19)
+
+    f.secao(3, "Pagamentos")
+    f.tabela([("#", 0.07), ("Vencimento", 0.2), ("Valor", 0.18), ("Forma de pagamento", 0.3),
+              ("Pago em", 0.25)], linhas=6, prefixo="pagamento", altura=19)
+    f.linha([("Total pago", "total_pago", 0.33), ("Valor pendente", "pendente", 0.33),
+             ("Próximo retorno", "retorno", 0.34)])
+    f.caixa("Observações", "observacoes", 30)
+    f.salvar()
+
+
+def ficha_fechamento(path: Path):
+    f = Ficha(path, "Fechamento Mensal")
+    f.nova_pagina()
+    f.cabecalho()
+
+    f.secao(1, "Mês de referência")
+    f.linha([("Mês / ano", "mes", 0.3), ("Meta de faturamento", "meta_faturamento", 0.35),
+             ("Meta de atendimentos", "meta_atendimentos", 0.35)])
+
+    f.secao(2, "Entradas por semana")
+    f.tabela([("Semana", 0.12), ("Atendimentos", 0.2), ("Pacotes vendidos", 0.2),
+              ("Valor recebido", 0.24), ("Valor pendente", 0.24)],
+             linhas=5, prefixo="semana", altura=19,
+             fixos=["1ª", "2ª", "3ª", "4ª", "5ª"])
+
+    f.secao(3, "Despesas do mês")
+    f.tabela([("Categoria", 0.4), ("Valor previsto", 0.3), ("Valor pago", 0.3)],
+             linhas=8, prefixo="despesa", altura=19,
+             fixos=["Aluguel do espaço", "Óleos e cremes", "Materiais descartáveis",
+                    "Lavanderia", "Divulgação e anúncios", "Taxas e impostos",
+                    "Manutenção e equipamentos", "Outros"])
+
+    f.secao(4, "Resumo do mês")
+    f.linha([("Faturamento total", "faturamento", 0.33), ("Despesas totais", "despesas", 0.33),
+             ("Lucro do mês", "lucro", 0.34)])
+    f.caixa("O que funcionou e o que ajustar no próximo mês", "ajustes", 44)
+    f.salvar()
+
+
+FICHAS = {
+    "ficha-anamnese.pdf": ficha_anamnese,
+    "evolucao-acompanhamento.pdf": ficha_evolucao,
+    "controle-sessoes-pacotes.pdf": ficha_pacotes,
+    "fechamento-mensal.pdf": ficha_fechamento,
+}
+
+
+def main():
+    PASTA.mkdir(exist_ok=True)
+    for nome, gerar in FICHAS.items():
+        gerar(PASTA / nome)
+        print(f"salvo em {PASTA / nome}")
 
 
 if __name__ == "__main__":
